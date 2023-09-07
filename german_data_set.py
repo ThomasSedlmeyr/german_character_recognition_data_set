@@ -217,8 +217,9 @@ class GermanLettersDataSet(tf.keras.utils.Sequence):
         self.n = len(self.labels)
 
     def calculate_mean_and_std(self):
-        mean = np.mean(self.image_data, axis=0)
-        std = np.std(self.image_data, axis=0)
+        mean = np.mean(self.image_data)
+        std = np.std(self.image_data)
+        print("mean: " + str(mean) + " std: " + str(std))
         return mean, std
 
 
@@ -286,16 +287,16 @@ if __name__ == '__main__':
     ds_merged.visualize_class_distribution("whole_data_set_distribution.png")
     #ds_merged.visualize_class_distribution()
     print("loaded ds")
-    x_train, x_test, y_train, y_test = ds_merged.split_in_test_and_train(500)
-    ds_test = GermanLettersDataSet.build_ds_from_array(x_test, y_test)
-    ds_train = GermanLettersDataSet.build_ds_from_array(x_train, y_train)
-    ds_test.visualize_class_distribution("test_distribution.png")
-    ds_train.visualize_class_distribution("train_distribution.png")
+    #x_train, x_test, y_train, y_test = ds_merged.split_in_test_and_train(500)
+    #ds_test = GermanLettersDataSet.build_ds_from_array(x_test, y_test)
+    #ds_train = GermanLettersDataSet.build_ds_from_array(x_train, y_train)
+    #ds_test.visualize_class_distribution("test_distribution.png")
+    #ds_test.save_as_pickle("test_ds.obj")
+    #ds_train.visualize_class_distribution("train_distribution.png")
+    #ds_train.save_as_pickle("train_ds.obj")
+    ds_train = GermanLettersDataSet.load_from_pickle("train_ds.obj")
+    #ds_train.calculate_mean_and_std()
     #ds_test.export_to_csv("test.csv")
     #ds_train.export_to_csv("train.csv")
     print("finished")
-
-
-
-
-
+    print("\',\'".join(ds_train.contained_classes))
