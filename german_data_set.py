@@ -1,11 +1,7 @@
-import multiprocessing
 import pickle
 import time
-import copy
 import numpy as np
 import tensorflow as tf
-
-from functools import partial
 
 from matplotlib import pyplot as plt
 from typing import Dict
@@ -28,10 +24,6 @@ class GermanLettersDataSet(tf.keras.utils.Sequence):
             self.contained_classes = []
 
     def __eq__(self, other):
-        #if other.labels[0] != self.
-        #for i in range(self.image_data):
-        labels = other.labels
-        labels2 = self.labels
         self.show_image_data(other.image_data[5])
         self.show_image_data(self.image_data[5])
         result = np.equal(self.image_data, other.image_data)

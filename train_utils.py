@@ -1,6 +1,5 @@
 import torchmetrics
 import torch
-import time
 
 class EarlyStopper:
     def __init__(self, patience=5, min_delta=0.001, model_weights=None):
@@ -84,5 +83,6 @@ class EpochInformation:
         }
         if self.model.training:
             result_dict["l2_grad"] = l2_norm_grads.item()
-            result_dict["l2_weights"] = l2_norm_weights.item()            
+            result_dict["l2_weights"] = l2_norm_weights.item()
+
         return result_dict 

@@ -64,7 +64,7 @@ def split_train_loader(train_data_set, train_indices, val_indices):
                                              shuffle=False, num_workers=num_workers)
     return train_loader, val_loader
 
-def get_all_labels_of_data_loader(data_loader, onehot_encoder):
+def get_class_counts_of_data_loader(data_loader, onehot_encoder):
     labels_count_dict = dict(zip(classes, len(classes) * [0]))
     for _, labels in data_loader:
         string_label = onehot_encoder.inverse_transform(labels)
@@ -170,9 +170,9 @@ test_set = GermanCharacterRecognitionDS(path_test_csv, transform=None, classes=c
 train_loader, val_loader = split_train_loader(train_set, np.load("train_indices_digits.npy"),
                                               np.load("val_indices_digits.npy"))
 test_loader = torch.utils.data.DataLoader(test_set, batch_size=batch_size, shuffle=False, num_workers=num_workers)
-print("train_loader: " + str(get_all_labels_of_data_loader(train_loader, onehot_encoder)))
-print("val_loader: " + str(get_all_labels_of_data_loader(val_loader, onehot_encoder)))
-print("test_loader: " + str(get_all_labels_of_data_loader(test_loader, onehot_encoder)))
+print("train_loader: " + str(get_class_counts_of_data_loader(train_loader, onehot_encoder)))
+print("val_loader: " + str(get_class_counts_of_data_loader(val_loader, onehot_encoder)))
+print("test_loader: " + str(get_class_counts_of_data_loader(test_loader, onehot_encoder)))
 
 data_loaders = {"train": train_loader, "val": val_loader}
 dataset_sizes = {"train": len(train_loader.dataset), "val": len(val_loader.dataset)}
@@ -199,8 +199,8 @@ loss_func = torch.nn.CrossEntropyLoss()
 #    batch_size=batch_size, shuffle=True)
 #data_loaders = {"train": train_loader, "val": test_loader}
 #dataset_sizes = {"train": len(train_loader.dataset), "val": len(test_loader.dataset)}
+model = network_pytorch.PyTorchClassifier(len(classes))
 device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-
 print(device)
 model = models.resnet18(weights=ResNet18_Weights.DEFAULT)
 model.fc = nn.Linear(model.fc.in_features, len(classes))

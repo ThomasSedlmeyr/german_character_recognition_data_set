@@ -3,10 +3,7 @@ import numpy as np
 
 class GermanCharacaterRecognitionDS(tf.keras.utils.Sequence):
 
-    def __init__(self, path_csv,
-                 batch_size,
-                 input_size=(40, 40, 1),
-                 shuffle=True):
+    def __init__(self, path_csv, batch_size, input_size=(40, 40, 1), shuffle=True):
         self.batch_size = batch_size
         self.input_size = input_size
         self.shuffle = shuffle
