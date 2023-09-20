@@ -1,11 +1,16 @@
 import pickle
 import time
 import numpy as np
-import tensorflow as tf
 
 from matplotlib import pyplot as plt
 from typing import Dict
 from sklearn.model_selection import train_test_split
+
+
+"""
+Contains the logic to parse and manipulate the csv-files. This code was used to clean up all the data and is not used
+during training
+"""
 
 class GermanLettersDataSet(tf.keras.utils.Sequence):
 
@@ -177,7 +182,7 @@ class GermanLettersDataSet(tf.keras.utils.Sequence):
         print(unique_labels)
         # Display images with labels
         for i in range(num_images):
-            axes[i].imshow(grayscale_images[i], cmap='gray')  # You can change the cmap as needed
+            axes[i].imshow(grayscale_images[i], cmap='gray')
             #axes[i].set_title(unique_labels[i])
             axes[i].axis('off')
         plt.show()
@@ -236,8 +241,6 @@ if __name__ == '__main__':
     #ds.export_to_csv("all_numbers.csv")
     #renaming_dict = None
     #ds.rename_ds(renaming_dict)
-    #ds = GermanLettersDataSet('/home/thomas/Dokumente/Projekte/CHG_data_sets/TestAlpha.csv')
-    #ds = GermanLettersDataSet('/home/thomas/Dokumente/Projekte/CHG_data_sets/All_letters.csv')
     #ds.split_ds(0.2)
     #ds.save_as_pickle("all_letters_ds.obj")
     #print("stated with loading")
@@ -249,23 +252,23 @@ if __name__ == '__main__':
     #print(ds.contained_classes)
     #ds.show_all_contained_images()
 
-    renaming_dict = {"Alpha": "alpha",  "Beta": "beta", "FrageZeichen": "question_mark", "GrößerZeichen": "greater_than",
-                     "Integral": "integral", "KleinerZeichen": "smaller_than", "Summe": "sum", "Und": "ampersand",
-                     "Unendlich": "infinity", "Phi": "phi", "Pi": "pi", "\x80": "euro", "Rundung": "tilde"}
+    #renaming_dict = {"Alpha": "alpha",  "Beta": "beta", "FrageZeichen": "question_mark", "GrößerZeichen": "greater_than",
+    #                 "Integral": "integral", "KleinerZeichen": "smaller_than", "Summe": "sum", "Und": "ampersand",
+    #                 "Unendlich": "infinity", "Phi": "phi", "Pi": "pi", "\x80": "euro", "Rundung": "tilde"}
     #ds_all_letters.rename_ds(renaming_dict)
-    unicode_mapping = {'!': '\u0021', '$': '\u0024', 'A': '\u0041', 'B': '\u0042', 'C': '\u0043', 'D': '\u0044',
-                       'E': '\u0045', 'F': '\u0046', 'G': '\u0047', 'H': '\u0048', 'I': '\u0049', 'J': '\u004A',
-                       'K': '\u004B', 'L': '\u004C', 'M': '\u004D', 'N': '\u004E', 'O': '\u004F', 'P': '\u0050',
-                       'Q': '\u0051', 'R': '\u0052', 'S': '\u0053', 'T': '\u0054', 'U': '\u0055', 'V': '\u0056',
-                       'W': '\u0057', 'X': '\u0058', 'Y': '\u0059', 'Z': '\u005A', 'a': '\u0061', 'alpha': '\u03B1',
-                       'ampersand': '\u0026', 'b': '\u0062', 'beta': '\u03B2', 'c': '\u0063', 'd': '\u0064',
-                       'e': '\u0065', 'euro': '\u20AC', 'f': '\u0066', 'g': '\u0067', 'greater_than': '\u003E',
-                       'h': '\u0068', 'i': '\u0069', 'infinity': '\u221E', 'integral': '\u222B', 'j': '\u006A',
-                       'k': '\u006B', 'l': '\u006C', 'm': '\u006D', 'n': '\u006E', 'o': '\u006F', 'p': '\u0070',
-                       'phi': '\u03C6', 'pi': '\u03C0', 'q': '\u0071', 'question_mark': '\u003F', 'r': '\u0072',
-                       's': '\u0073', 'smaller_than': '\u003C', 'sum': '\u2211', 't': '\u0074', 'tilde': '\u007E',
-                       'u': '\u0075', 'v': '\u0076', 'w': '\u0077', 'x': '\u0078', 'y': '\u0079', 'z': '\u007A',
-                       'ß': '\u00DF'}
+    #unicode_mapping = {'!': '\u0021', '$': '\u0024', 'A': '\u0041', 'B': '\u0042', 'C': '\u0043', 'D': '\u0044',
+    #                   'E': '\u0045', 'F': '\u0046', 'G': '\u0047', 'H': '\u0048', 'I': '\u0049', 'J': '\u004A',
+    #                   'K': '\u004B', 'L': '\u004C', 'M': '\u004D', 'N': '\u004E', 'O': '\u004F', 'P': '\u0050',
+    #                   'Q': '\u0051', 'R': '\u0052', 'S': '\u0053', 'T': '\u0054', 'U': '\u0055', 'V': '\u0056',
+    #                   'W': '\u0057', 'X': '\u0058', 'Y': '\u0059', 'Z': '\u005A', 'a': '\u0061', 'alpha': '\u03B1',
+    #                   'ampersand': '\u0026', 'b': '\u0062', 'beta': '\u03B2', 'c': '\u0063', 'd': '\u0064',
+    #                   'e': '\u0065', 'euro': '\u20AC', 'f': '\u0066', 'g': '\u0067', 'greater_than': '\u003E',
+    #                   'h': '\u0068', 'i': '\u0069', 'infinity': '\u221E', 'integral': '\u222B', 'j': '\u006A',
+    #                   'k': '\u006B', 'l': '\u006C', 'm': '\u006D', 'n': '\u006E', 'o': '\u006F', 'p': '\u0070',
+    #                   'phi': '\u03C6', 'pi': '\u03C0', 'q': '\u0071', 'question_mark': '\u003F', 'r': '\u0072',
+    #                   's': '\u0073', 'smaller_than': '\u003C', 'sum': '\u2211', 't': '\u0074', 'tilde': '\u007E',
+    #                   'u': '\u0075', 'v': '\u0076', 'w': '\u0077', 'x': '\u0078', 'y': '\u0079', 'z': '\u007A',
+    #                   'ß': '\u00DF'}
     #ds_all_letters.rename_ds(unicode_mapping)
 
     #print("Number different classes: " + str(len(ds.contained_classes)))
@@ -275,10 +278,10 @@ if __name__ == '__main__':
     #ds_all_letters.concat_two_sets(ds_all_numbers)
     #ds_all_letters.save_as_pickle("ds_merged.obj")
     #ds_all_letters.export_to_csv("ds_merged.csv")
-    ds_merged = GermanLettersDataSet.load_from_pickle("ds_merged.obj")
-    ds_merged.visualize_class_distribution("whole_data_set_distribution.png")
+    #ds_merged = GermanLettersDataSet.load_from_pickle("ds_merged.obj")
+    #ds_merged.visualize_class_distribution("whole_data_set_distribution.png")
     #ds_merged.visualize_class_distribution()
-    print("loaded ds")
+    #print("loaded ds")
     #x_train, x_test, y_train, y_test = ds_merged.split_in_test_and_train(500)
     #ds_test = GermanLettersDataSet.build_ds_from_array(x_test, y_test)
     #ds_train = GermanLettersDataSet.build_ds_from_array(x_train, y_train)
@@ -286,9 +289,8 @@ if __name__ == '__main__':
     #ds_test.save_as_pickle("test_ds.obj")
     #ds_train.visualize_class_distribution("train_distribution.png")
     #ds_train.save_as_pickle("train_ds.obj")
-    ds_train = GermanLettersDataSet.load_from_pickle("train_ds.obj")
+    #ds_train = GermanLettersDataSet.load_from_pickle("train_ds.obj")
     #ds_train.calculate_mean_and_std()
     #ds_test.export_to_csv("test.csv")
     #ds_train.export_to_csv("train.csv")
-    print("finished")
-    print("\',\'".join(ds_train.contained_classes))
+    #print("\',\'".join(ds_train.contained_classes))

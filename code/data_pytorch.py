@@ -1,14 +1,8 @@
-import os
-
-import pandas as pd
+from torch.utils.data import Dataset
 import numpy as np
-import torch
-from torchvision.io import read_image
-from torch.utils.data import Dataset, DataLoader
-from sklearn.preprocessing import OneHotEncoder
 
 class GermanCharacterRecognitionDS(Dataset):
-    def __init__(self, path_csv, one_hot_encoder, transform=None, target_transform=None, classes=[],
+    def __init__(self, path_csv, dict_classes_to_numbers, transform=None, target_transform=None, classes=[],
                  num_channels=1):
         self.path_csv = path_csv
         self.transform = transform
@@ -16,8 +10,8 @@ class GermanCharacterRecognitionDS(Dataset):
         self.data_lines = self.read_lines_csv(classes)
         self.n = len(self.data_lines)
         self.classes = classes
-        self.onehot_encoder = one_hot_encoder
         self.num_channels = num_channels
+        self.dict_classes_to_numbers = dict_classes_to_numbers
 
     def __len__(self):
         return self.n
@@ -27,13 +21,13 @@ class GermanCharacterRecognitionDS(Dataset):
         if self.transform:
             image = self.transform(image)
         if self.target_transform:
-            label = self.target_transform(label)
-
-        label = self.onehot_encoder.transform(np.array(label).reshape(-1, 1))[0]
+            label = self.target_transform(label)            
+        # We have to convert the label to an integer value
+        label = self.dict_classes_to_numbers[label]
         return image, label
 
     def read_lines_csv(self, classes):
-        training_data_file = open(self.path_csv, 'r', encoding="latin-1")
+        training_data_file = open(self.path_csv, 'r')
         data_lines = training_data_file.readlines()
         training_data_file.close()
         data_lines = [line for line in data_lines if line[0] in classes]
@@ -43,7 +37,6 @@ class GermanCharacterRecognitionDS(Dataset):
         line = self.data_lines[index].split(',')
         image_np = np.asarray(line[1:1601], dtype=np.float32)
         image_np = image_np.reshape(40, 40, 1)
-        if self.num_channels:
+        if self.num_channels != 1:
             image_np = np.repeat(image_np, self.num_channels, axis=2)
-        # image_tensor = torch.from_numpy(image_np)
         return line[0], image_np
